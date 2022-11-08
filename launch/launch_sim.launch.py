@@ -37,20 +37,23 @@ def generate_launch_description():
                                    '-entity', 'my_bot'],
                         output='screen')
 
-    # Run a real Lidar sensor
-#    lidar_node = Node(package='rplidar_ros',
-#                        executable='rplidar_composition',
-#                        output='screen',
-#                        parameters=[{
-#                        'serial_port': '/dev/serial/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0-port0',
-#                        'frame_id': 'laser_frame',
-#                        'angle_compensate': True,
-#                        'scan_mode': 'Standard'}] )
+    diff_drive_spawner = Node(
+        package="controller_manager",
+        executable="spawner.py",
+        arguments=["diff_cont"],
+    )
+
+    joint_broad_spawner = Node(
+        package="controller_manager",
+        executable="spawner.py",
+        arguments=["joint_broad"],
+    )
 
     # Launch them all!
     return LaunchDescription([
         rsp,
         gazebo,
         spawn_entity,
-
+        diff_drive_spawner,
+        joint_broad_spawner
     ])
